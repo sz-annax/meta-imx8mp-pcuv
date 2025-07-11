@@ -46,7 +46,6 @@ IMAGE_INSTALL += " \
     python3-paho-mqtt \
     python3-pygobject \
     python3-gpiod \
-    python3-evdev \
     python3-numpy \
     python3-dbus \
     python3-aiohttp \
