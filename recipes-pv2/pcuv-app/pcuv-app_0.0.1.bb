@@ -2,10 +2,11 @@ SUMMARY = "IMX8MP PCUV Python Application Service"
 DESCRIPTION = "PCUV Python application that runs as a systemd service."
 LICENSE = "CLOSED"
 
-SRC_URI = "git://git@github.com/sz-annax/acc-app.git;protocol=ssh;branch=main \
-           file://acc-app.service \
+SRC_URI = "git://git@github.com/sz-annax/pcuv-app.git;protocol=ssh;branch=main \
+           file://pcuv-app.service \
+           file://my-echo-cancel.conf \
         "
-SRCREV = "248170f6e30aeabf61f9ac57bdeea639fff10a5f"
+SRCREV = "45d4491bb01df1fb7c16add199729052d26603f7"
 
 S = "${WORKDIR}/git"
 
@@ -13,13 +14,17 @@ do_install() {
     # delete unnecessary files and folders
     rm -rf ${S}/docs ${S}/script
 
-    # /usr/share/acc-app
+    # /usr/share/pcuv-app
     install -d ${D}${datadir}/${PN}
     cp -r ${S}/* ${D}${datadir}/${PN}/
 
     # systemd service
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${UNPACKDIR}/${PN}.service ${D}${systemd_system_unitdir}/
+
+    # my-echo-cancel.conf
+    install -d ${D}${sysconfdir}/pipewire/pipewire.conf.d
+    install -m 0644 ${UNPACKDIR}/my-echo-cancel.conf ${D}${sysconfdir}/pipewire/pipewire.conf.d
 }
 
 FILES_${PN} = "${bindir}/${PN}.sh"

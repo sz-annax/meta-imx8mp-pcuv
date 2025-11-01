@@ -3,8 +3,8 @@ Description=ACC Python Application Service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /usr/share/acc-app/main.py
-WorkingDirectory=/usr/share/acc-app
+ExecStart=/usr/bin/python3 /usr/share/pcuv-app/main.py
+WorkingDirectory=/usr/share/pcuv-app
 Restart=always
 RestartSec=5
 User=root
