@@ -1,5 +1,6 @@
 [Unit]
 Description=ACC Python Application Service
+Requires=baresip.service
 
 [Service]
 Type=simple

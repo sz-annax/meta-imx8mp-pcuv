@@ -88,5 +88,7 @@ IMAGE_INSTALL += " \
     flutter-auto flutter-pi flutter-samples-compass-app ivi-homescreen \
     fluttercommunity-plus-plugins-packages-battery-plus-battery-plus-example \
     my-flutter-webrtc \
+    baresip \
+    device-service \
+    pcuv-app \
 "
-
