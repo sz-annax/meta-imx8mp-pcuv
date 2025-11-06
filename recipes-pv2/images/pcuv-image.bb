@@ -92,3 +92,24 @@ IMAGE_INSTALL += " \
     device-service \
     pcuv-app \
 "
+
+SRC_URI += " file://gen_pcuv.py"
+
+do_generate_pcuv() {
+    # WORKDIR 中会有 gen_pcuv.py（因为 SRC_URI 把文件放到 ${WORKDIR}）
+    # DEPLOY_DIR_IMAGE 为 bitbake 的变量，指向 tmp/deploy/images/<MACHINE>
+    IMAGES_DIR="${DEPLOY_DIR_IMAGE}"
+    OUT_DIR="${DEPLOY_DIR_IMAGE}"
+    # 使用 build-host 的 python3 执行；如果 HOST_PYTHON3 未定义则 fallback 到 python3
+    PYTHON_BIN="${HOST_PYTHON3}"
+    if [ -z "${PYTHON_BIN}" ]; then
+        PYTHON_BIN="python3"
+    fi
+
+    echo "Running gen_pcuv.py (images: ${IMAGES_DIR})"
+    ${PYTHON_BIN} "${WORKDIR}/gen_pcuv.py" --images-dir "${IMAGES_DIR}" --output-dir "${OUT_DIR}"
+}
+
+# 确保该任务作为 image 的后处理任务执行（在 do_image 之后）
+addtask do_generate_pcuv after do_image before do_deploy
+do_generate_pcuv[nostamp] = "1"
