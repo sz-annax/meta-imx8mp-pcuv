@@ -5,7 +5,7 @@ GO_IMPORT = "github.com/sz-annax/device-service"
 
 SRC_URI = "git://git@${GO_IMPORT}.git;protocol=ssh;destsuffix=${BPN}-${PV}/src/${GO_IMPORT};branch=main \
            file://device-config.yaml \
-           file://device.service \
+           file://device-service.service \
           "
 SRCREV = "e515b653f22a578c8f158506aa24ef8d82487f7c"
 
@@ -40,12 +40,12 @@ do_install:append() {
     install -d ${D}${sysconfdir}/pcu
     install -m 0644 ${UNPACKDIR}/device-config.yaml ${D}${sysconfdir}/pcu
 
-    # /usb/lib/systemd/system/device.service
+    # /usr/lib/systemd/system/device-service.service
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${UNPACKDIR}/device.service ${D}${systemd_unitdir}/system
+    install -m 0644 ${UNPACKDIR}/device-service.service ${D}${systemd_unitdir}/system
 }
 
-FILES:${PN} += "${systemd_unitdir}/device.service"
+FILES:${PN} += "${systemd_unitdir}/device-service.service"
 
-SYSTEMD_SERVICE:${PN} = "device.service"
+SYSTEMD_SERVICE:${PN} = "device-service.service"
 SYSTEMD_AUTO_ENABLE:${PN} = "enable"

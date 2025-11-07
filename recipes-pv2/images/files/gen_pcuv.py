@@ -3,8 +3,6 @@ import argparse
 import hashlib
 import json
 import tarfile
-import shutil
-import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -98,39 +96,28 @@ def main():
         "devicetype": TARGET_TYPE
     }
 
-    temp_dir = Path(tempfile.mkdtemp())
-    try:
-        for key, path in files.items():
-            if path is None or not str(path):
-                result[key] = None
-                continue
-            
-            print(f"Processing {key}: {path}")
-            if not path.is_file():
-                print(f"Warning: {key} file '{path}' not found, skipping.")
-                result[key] = None
-                continue
-
-            sha = sha256sum(path)
+    temp_files = []
+    for key, p in files.items():
+        if p is not None and p.exists() and p.is_file():
+            temp_files.append(p)
+            sha = sha256sum(p)
             result[key] = {
-                "name": path.name,
+                "name": p.name,
                 "sha": sha
             }
 
-            shutil.copy2(path, temp_dir / path.name)
+    # JSON
+    with open(JSON_FILE, "w") as f:
+        json.dump(result, f, indent=4)
 
-        # JSON
-        with open(JSON_FILE, "w") as f:
-            json.dump(result, f, indent=4)
-        shutil.copy2(JSON_FILE, temp_dir / JSON_FILE.name)
+    # Create tar.gz package
+    with tarfile.open(TARGET_FILE, "w:gz") as tar:
+        tar.add(JSON_FILE, arcname="package.json")
+        for item in temp_files:
+            tar.add(item, arcname=item.name)
 
-        with tarfile.open(TARGET_FILE, "w:gz") as tar:
-            for item in temp_dir.iterdir():
-                tar.add(item, arcname=item.name)
+    print(f"{TARGET_FILE} created successfully.")
 
-        print(f"{TARGET_FILE} created successfully.")
-    finally:
-        shutil.rmtree(temp_dir)
 
 if __name__ == "__main__":
     main()

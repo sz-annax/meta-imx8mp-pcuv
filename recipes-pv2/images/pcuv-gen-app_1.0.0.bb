@@ -8,9 +8,12 @@ S = "${UNPACKDIR}"
 
 inherit python3native
 
+DEPENDS = "pcuv-app"
+
 TARGET_NAME ?= "PCU-VIDEO"
 TARGET_TYPE ?= "PCUV"
 IMAGE_TYPE ?= "deb"
+DEB_FILES = 'pcuv-app,device-service'
 
 IMAGES_DIR ?= "${DEPLOY_DIR_IMAGE}"
 OUT_DIR ?= "${DEPLOY_DIR_IMAGE}"
@@ -29,8 +32,8 @@ do_compile() {
         --target-version "${PV}" \
         --target-name "${TARGET_NAME}" \
         --target-type "${TARGET_TYPE}" \
-        --deploy-dir-deb "${DEPLOY_DIR_DEB}/${PACKAGE_ARCH}"
-
+        --deploy-dir-deb "${DEPLOY_DIR_DEB}/${PACKAGE_ARCH}" \
+        --deb-list "${DEB_FILES}"
 }
 
 do_install[noexec] = "1"

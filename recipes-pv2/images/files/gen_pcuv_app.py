@@ -3,18 +3,13 @@ import argparse
 import hashlib
 import json
 import tarfile
-import shutil
-import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
 # defaults are kept for standalone run
 DEFAULT_TARGET_NAME = "PCU-VIDEO"
-DEFAULT_TARGET_VERSION = "v0.0.1"
+DEFAULT_TARGET_VERSION = "1.0.0"
 DEFAULT_TARGET_TYPE = "PCUV"
-DEB_LIST = [
-    {"name": "pcuv-app_0.0.1-r0_arm64.deb", "service": "pcuv-app.service"}
-]
 
 def sha256sum(filepath):
     h = hashlib.sha256()
@@ -30,6 +25,7 @@ def main():
     p.add_argument("--target-version", default=DEFAULT_TARGET_VERSION)
     p.add_argument("--target-type", default=DEFAULT_TARGET_TYPE)
     p.add_argument("--deploy-dir-deb", default=None, help="Path to deploy deb directory")
+    p.add_argument("--deb-list", type=lambda s: s.split(","), default=[], help="List of deb files to include")
     args = p.parse_args()
 
     TARGET_NAME = args.target_name
@@ -37,6 +33,7 @@ def main():
     TARGET_TYPE = args.target_type
     IMAGE_TYPE = "app"
     DEPLOY_DIR_DEB = ""
+    deb_files = []
 
     if args.output_dir:
         OUT_DIR = Path(args.output_dir).resolve()
@@ -47,6 +44,21 @@ def main():
         DEPLOY_DIR_DEB = Path(args.deploy_dir_deb).resolve()
     else:
         raise ValueError("Deploy deb directory must be specified with --deploy-dir-deb")
+
+    for deb_prefix in args.deb_list:
+        deb_dir = Path(DEPLOY_DIR_DEB)
+        matches = sorted(deb_dir.glob(f"{deb_prefix}_*.deb"))
+        if matches:
+            latest = matches[-1]
+            print(f"find deb: {latest}")
+            deb_files.append({
+                "name": deb_prefix,
+                "fullname": latest.name,
+                "path": latest.resolve()
+            })
+
+    if len(deb_files) == 0:
+        raise ValueError("Not found any debs with --deb-list")
 
     JSON_FILE = OUT_DIR / "package.json"
     TARGET_FILE = OUT_DIR / f"{TARGET_NAME}-{IMAGE_TYPE}-{TARGET_VERSION}.tar.gz"
@@ -61,22 +73,14 @@ def main():
         "debs": []
     }
 
-    for deb in DEB_LIST:
-        p = Path(f"{DEPLOY_DIR_DEB}/{deb['name']}")
-        print("deb path:", p)
-        if p.exists():
-            deb['path'] = p.resolve()
-            deb['sha'] = sha256sum(p)
-            
-            result['debs'].append({
-                "name": deb['name'],
-                "service": deb['service'],
-                "sha": deb['sha']
-            })
-        else:
-            raise FileNotFoundError(f"deb file not found: {p}")
+    for deb in deb_files:
+        result['debs'].append({
+            "name": deb['name'],
+            "fullname": deb['fullname'],
+            "sha": sha256sum(deb['path'])
+        })
 
-    print(f"DEB_LIST: {DEB_LIST}")
+    print(f"deb_files: {deb_files}")
 
     # JSON
     with open(JSON_FILE, "w") as f:
@@ -84,9 +88,9 @@ def main():
 
     with tarfile.open(TARGET_FILE, "w:gz") as tar:
         tar.add(JSON_FILE, arcname="package.json")
-        for deb in DEB_LIST:
+        for deb in deb_files:
             print(f"deb: {deb}")
-            tar.add(deb['path'], arcname=deb['name'])
+            tar.add(deb['path'], arcname=deb['fullname'])
 
     print(f"{TARGET_FILE} created successfully.")
 
