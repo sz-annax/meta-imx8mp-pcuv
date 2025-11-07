@@ -46,7 +46,7 @@ def main():
     RECOVERY_ROOTFS = None
 
     if args.output_dir:
-        OUT_DIR = Path(args.output_dir).resolve()
+        OUT_DIR = Path(args.output_dir)
     else:
         raise ValueError("Output directory must be specified with --output-dir")
 
@@ -54,25 +54,25 @@ def main():
         IMAGE_TYPE = args.image_type
 
     if args.uboot:
-        UBOOT_IMAGE = Path(args.uboot).resolve()
+        UBOOT_IMAGE = Path(args.uboot)
     
     if args.kernel_image:
-        KERNEL_IMAGE = Path(args.kernel_image).resolve()
+        KERNEL_IMAGE = Path(args.kernel_image)
 
     if args.dtb:
-        DTB_IMAGE = Path(args.dtb).resolve()
+        DTB_IMAGE = Path(args.dtb)
 
     if args.rootfs:
-        ROOTFS_IMAGE = Path(args.rootfs).resolve()
+        ROOTFS_IMAGE = Path(args.rootfs)
 
     if args.recovery_dtb:
-        RECOVERY_DTB = Path(args.recovery_dtb).resolve()
+        RECOVERY_DTB = Path(args.recovery_dtb)
 
     if args.recovery_image:
-        RECOVERY_IMAGE = Path(args.recovery_image).resolve()
+        RECOVERY_IMAGE = Path(args.recovery_image)
 
     if args.recovery_rootfs:
-        RECOVERY_ROOTFS = Path(args.recovery_rootfs).resolve()
+        RECOVERY_ROOTFS = Path(args.recovery_rootfs)
 
     JSON_FILE = OUT_DIR / "package.json"
     TARGET_FILE = OUT_DIR / f"{TARGET_NAME}-{IMAGE_TYPE}-{TARGET_VERSION}.tar.gz"
@@ -111,7 +111,7 @@ def main():
         json.dump(result, f, indent=4)
 
     # Create tar.gz package
-    with tarfile.open(TARGET_FILE, "w:gz") as tar:
+    with tarfile.open(TARGET_FILE, "w:gz", dereference=True) as tar:
         tar.add(JSON_FILE, arcname="package.json")
         for item in temp_files:
             tar.add(item, arcname=item.name)
