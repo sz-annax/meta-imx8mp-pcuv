@@ -7,7 +7,7 @@ SRC_URI = "git://git@${GO_IMPORT}.git;protocol=ssh;destsuffix=${BPN}-${PV}/src/$
            file://device-config.yaml \
            file://device-service.service \
           "
-SRCREV = "5d6bbc9779f679c0b4b9469342ea266a801f3283"
+SRCREV = "c3c24bba6e2df8f885465c5c93fbbaadf039dcb0"
 
 # Upstream repo does not tag
 UPSTREAM_CHECK_COMMITS = "1"
@@ -33,6 +33,15 @@ INSANE_SKIP:${PN} += "already-stripped"
 INSANE_SKIP:${PN} += "textrel"
 INSANE_SKIP:${PN}-dev += "textrel"
 
+do_compile:prepend() {
+    echo "=== PATH: $PATH"
+    echo "=== go: $(which go)"
+    echo "=== go: $(go version)"
+
+    echo "=== linux-go: $(which aarch64-poky-linux-go)"
+    echo "=== linux-go: $(aarch64-poky-linux-go version)"
+}
+
 do_install:append() {
     rm -f ${D}/usr/lib/go/src/${GO_IMPORT}/build-arm64.sh
 
@@ -49,3 +58,5 @@ FILES:${PN} += "${systemd_unitdir}/device-service.service"
 
 SYSTEMD_SERVICE:${PN} = "device-service.service"
 SYSTEMD_AUTO_ENABLE:${PN} = "enable"
+
+RDEPENDS:${PN}-dev += "bash"
