@@ -56,6 +56,8 @@ def main():
                 "fullname": latest.name,
                 "path": latest.resolve()
             })
+        else:
+            raise ValueError(f"not find {deb_prefix}")
 
     if len(deb_files) == 0:
         raise ValueError("Not found any debs with --deb-list")

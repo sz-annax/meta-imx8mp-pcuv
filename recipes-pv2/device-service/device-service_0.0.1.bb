@@ -21,7 +21,7 @@ do_compile[network] = "1"
 B = "${S}/src/${GO_IMPORT}/bin"
 
 # Version and build information
-GO_EXTRA_LDFLAGS += ' -X ${GO_IMPORT}/conf.VERSION=${PV} -X ${GO_IMPORT}/conf.BUILD=${SRCREV}'
+GO_EXTRA_LDFLAGS += ' -X ${GO_IMPORT}/conf.VERSION=${PV} -X ${GO_IMPORT}/conf.BUILD=${@d.getVar("SRCREV")[:7]}'
 
 CGO_ENABLED = "1"
 GO_INSTALL = "."
@@ -32,15 +32,6 @@ inherit go-mod systemd
 INSANE_SKIP:${PN} += "already-stripped"
 INSANE_SKIP:${PN} += "textrel"
 INSANE_SKIP:${PN}-dev += "textrel"
-
-do_compile:prepend() {
-    echo "=== PATH: $PATH"
-    echo "=== go: $(which go)"
-    echo "=== go: $(go version)"
-
-    echo "=== linux-go: $(which aarch64-poky-linux-go)"
-    echo "=== linux-go: $(aarch64-poky-linux-go version)"
-}
 
 do_install:append() {
     rm -f ${D}/usr/lib/go/src/${GO_IMPORT}/build-arm64.sh

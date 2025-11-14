@@ -105,6 +105,8 @@ def main():
                 "name": p.name,
                 "sha": sha
             }
+        elif p is not None:
+            raise ValueError(f"file not exist: {f}")
 
     # JSON
     with open(JSON_FILE, "w") as f:
