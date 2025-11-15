@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import os
 import tarfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -37,6 +38,7 @@ def main():
 
     if args.output_dir:
         OUT_DIR = Path(args.output_dir).resolve()
+        os.makedirs(OUT_DIR, exist_ok=True)
     else:
         raise ValueError("Output directory must be specified with --output-dir")
 
@@ -63,7 +65,7 @@ def main():
         raise ValueError("Not found any debs with --deb-list")
 
     JSON_FILE = OUT_DIR / "package.json"
-    TARGET_FILE = OUT_DIR / f"{TARGET_NAME}-{IMAGE_TYPE}-{TARGET_VERSION}.tar.gz"
+    TARGET_FILE = OUT_DIR / f"{TARGET_NAME}-{IMAGE_TYPE}-v{TARGET_VERSION}.tar.gz"
 
     print(f"Generating {TARGET_NAME}({TARGET_TYPE})-{IMAGE_TYPE} upgrade package ...")
 

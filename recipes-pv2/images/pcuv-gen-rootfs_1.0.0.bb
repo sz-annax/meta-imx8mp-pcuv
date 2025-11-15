@@ -13,7 +13,7 @@ TARGET_TYPE ?= "PCUV"
 IMAGE_TYPE ?= "rootfs"
 
 IMAGES_DIR ?= "${DEPLOY_DIR_IMAGE}"
-OUT_DIR ?= "${DEPLOY_DIR_IMAGE}"
+OUT_DIR ?= "${TMPDIR}/annax"
 
 do_compile() {
     echo "==== PCUV rootfs package generation ===="

@@ -2,13 +2,14 @@
 import argparse
 import hashlib
 import json
+import os
 import tarfile
 from datetime import datetime, timezone
 from pathlib import Path
 
 # defaults are kept for standalone run
 DEFAULT_TARGET_NAME = "PCU-VIDEO"
-DEFAULT_TARGET_VERSION = "v0.0.1"
+DEFAULT_TARGET_VERSION = "0.0.1"
 DEFAULT_TARGET_TYPE = "PCUV"
 
 def sha256sum(filepath):
@@ -47,6 +48,7 @@ def main():
 
     if args.output_dir:
         OUT_DIR = Path(args.output_dir)
+        os.makedirs(OUT_DIR, exist_ok=True)
     else:
         raise ValueError("Output directory must be specified with --output-dir")
 
@@ -75,7 +77,7 @@ def main():
         RECOVERY_ROOTFS = Path(args.recovery_rootfs)
 
     JSON_FILE = OUT_DIR / "package.json"
-    TARGET_FILE = OUT_DIR / f"{TARGET_NAME}-{IMAGE_TYPE}-{TARGET_VERSION}.tar.gz"
+    TARGET_FILE = OUT_DIR / f"{TARGET_NAME}-{IMAGE_TYPE}-v{TARGET_VERSION}.tar.gz"
 
     files = {
         "uboot": UBOOT_IMAGE,

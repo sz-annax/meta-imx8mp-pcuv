@@ -15,7 +15,7 @@ TARGET_TYPE ?= "PCUV"
 IMAGE_TYPE ?= "factory"
 
 IMAGES_DIR ?= "${DEPLOY_DIR_IMAGE}"
-OUT_DIR ?= "${DEPLOY_DIR_IMAGE}"
+OUT_DIR ?= "${TMPDIR}/annax"
 
 do_compile() {
     echo "==== PCUV factory package generation ===="

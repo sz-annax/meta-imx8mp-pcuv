@@ -76,7 +76,6 @@ IMAGE_INSTALL += " \
     libubootenv \
     libubootenv-bin \
     htop \
-    v4l-utils \
     i2c-tools \
     sqlite3 \
     journal-mount \
