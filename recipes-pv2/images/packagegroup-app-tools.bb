@@ -7,12 +7,14 @@ inherit packagegroup
 
 PIPEWIRE_TOOLS = " \
     pipewire \
+    wireplumber \
     pipewire-pulse \
     pipewire-spa-tools \
     pipewire-tools \
-    ${PIPEWIRE_V4L2} \
+    pipewire-media-session \
+    pipewire-v4l2 \
+    pipewire-alsa \
 "
-PIPEWIRE_V4L2 = "pipewire-v4l2"
 
 RDEPENDS:${PN} = " \
     can-utils \
@@ -45,4 +47,5 @@ RDEPENDS:${PN} = " \
     procps \
     ptpd \
     udev-extraconf \
+    dbus-broker \
 "

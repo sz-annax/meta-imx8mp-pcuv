@@ -8,7 +8,9 @@ inherit core-image extrausers
 PASSWD = "\$5\$Hv7.3840I6SB21jN\$.xw0MzN1SbQFaKMhewg4GFMDetCHg4wBuuBxKkxNUa5"
 EXTRA_USERS_PARAMS = "\
     usermod -p '${PASSWD}' root; \
-    "
+    useradd -m -G video,audio,input,tty,dialout,render,plugdev,adm --shell /bin/bash imx; \
+    usermod -p '${PASSWD}' imx; \
+"
 
 CLANGSDK = "1"
 
@@ -32,7 +34,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-fsl-tools-audio \
     packagegroup-fsl-tools-gpu \
     packagegroup-fsl-tools-gpu-external \
-    packagegroup-imx-isp \
     packagegroup-fsl-gstreamer1.0 \
     packagegroup-fsl-gstreamer1.0-full \
     packagegroup-app-tools \
@@ -49,9 +50,11 @@ PACKAGECONFIG:append:pn-flutter-engine = " profile debug"
 
 IMAGE_INSTALL += " \
     chrony \
+    libcamera \
     coreutils \
+    go-runtime \
     git cmake vim tree \
-    pipewire-alsa \
+    python3-pyroute2 \
     python3-paho-mqtt \
     python3-pygobject \
     python3-gpiod \
@@ -92,3 +95,5 @@ IMAGE_INSTALL += " \
     device-service \
     pcuv-app \
 "
+
+SYSTEMD_AUTO_ENABLE_USER_SERVICES = "enable"

@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 
 SRC_URI = "file://gen_pcuv.py \
            file://recoveryImage \
-           file://recovery-rootfs-imx8mp.img"
+           file://recovery-rootfs.img"
 
 S = "${UNPACKDIR}"
 
@@ -38,7 +38,7 @@ do_compile() {
         --rootfs "${IMAGES_DIR}/pcuv-image-imx8mp-pcu.rootfs.tar.zst" \
         --recovery-dtb "${IMAGES_DIR}/imx8mp-pcuv-recovery.dtb" \
         --recovery-image "${UNPACKDIR}/recoveryImage" \
-        --recovery-rootfs "${UNPACKDIR}/recovery-rootfs-imx8mp.img"
+        --recovery-rootfs "${UNPACKDIR}/recovery-rootfs.img"
 }
 
 do_install[noexec] = "1"
