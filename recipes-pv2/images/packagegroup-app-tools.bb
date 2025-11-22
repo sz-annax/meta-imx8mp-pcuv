@@ -1,5 +1,5 @@
 
-DESCRIPTION = "Packagegroup to provide necessary tools for pei image"
+DESCRIPTION = "Packagegroup to provide necessary tools for pcu-video image"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -11,7 +11,6 @@ PIPEWIRE_TOOLS = " \
     pipewire-pulse \
     pipewire-spa-tools \
     pipewire-tools \
-    pipewire-media-session \
     pipewire-v4l2 \
     pipewire-alsa \
 "

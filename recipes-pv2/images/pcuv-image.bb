@@ -8,8 +8,6 @@ inherit core-image extrausers
 PASSWD = "\$5\$Hv7.3840I6SB21jN\$.xw0MzN1SbQFaKMhewg4GFMDetCHg4wBuuBxKkxNUa5"
 EXTRA_USERS_PARAMS = "\
     usermod -p '${PASSWD}' root; \
-    useradd -m -G video,audio,input,tty,dialout,render,plugdev,adm --shell /bin/bash imx; \
-    usermod -p '${PASSWD}' imx; \
 "
 
 CLANGSDK = "1"
@@ -49,6 +47,7 @@ PACKAGECONFIG:append:pn-weston = " remoting"
 PACKAGECONFIG:append:pn-flutter-engine = " profile debug"
 
 IMAGE_INSTALL += " \
+    libsrtp \
     chrony \
     libcamera \
     coreutils \
@@ -91,9 +90,9 @@ IMAGE_INSTALL += " \
     flutter-auto flutter-pi flutter-samples-compass-app ivi-homescreen \
     fluttercommunity-plus-plugins-packages-battery-plus-battery-plus-example \
     my-flutter-webrtc \
+    v4l2loopback \
+    v4l2loopback-utils \
     baresip \
     device-service \
     pcuv-app \
 "
-
-SYSTEMD_AUTO_ENABLE_USER_SERVICES = "enable"
