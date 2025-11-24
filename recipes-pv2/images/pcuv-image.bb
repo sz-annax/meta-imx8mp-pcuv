@@ -47,15 +47,13 @@ PACKAGECONFIG:append:pn-weston = " remoting"
 PACKAGECONFIG:append:pn-flutter-engine = " profile debug"
 
 IMAGE_INSTALL += " \
-    libsrtp \
-    chrony \
-    libcamera \
-    coreutils \
-    go-runtime \
-    git cmake vim tree \
+    python3-core \
+    python3-datetime \
+    python3-json \
+    python3-modules \
+    python3-misc \
     python3-pyroute2 \
     python3-paho-mqtt \
-    python3-pygobject \
     python3-gpiod \
     python3-evdev \
     python3-numpy \
@@ -63,6 +61,17 @@ IMAGE_INSTALL += " \
     python3-sqlite3 \
     python3-netifaces \
     python3-posix-ipc \
+    python3-websockets \
+    libnice \
+    libvpx \
+    libopus \
+    json-glib \
+    libsrtp \
+    chrony \
+    libcamera \
+    coreutils \
+    go-runtime \
+    git cmake vim tree \
     sox \
     curl \
     evtest \
@@ -85,6 +94,7 @@ IMAGE_INSTALL += " \
     gst-variable-rtsp-server \
     gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-bad \
+    gstreamer1.0-python \
     glibc-utils glibc-gconv \
     tzdata-core tzdata-asia \
     flutter-auto flutter-pi flutter-samples-compass-app ivi-homescreen \
@@ -95,4 +105,5 @@ IMAGE_INSTALL += " \
     baresip \
     device-service \
     pcuv-app \
+    webrtc-test \
 "

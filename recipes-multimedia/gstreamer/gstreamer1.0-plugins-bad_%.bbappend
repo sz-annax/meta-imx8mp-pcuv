@@ -1,4 +1,4 @@
-PACKAGECONFIG:mx8mp-nxp-bsp:append = " openssl sctp dtls srtp webrtc"
+PACKAGECONFIG:append = " openssl sctp dtls srtp webrtc"
 
 DEPENDS:append = " libsrtp openssl libnice"
 
