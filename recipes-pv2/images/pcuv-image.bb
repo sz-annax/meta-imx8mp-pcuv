@@ -47,6 +47,7 @@ PACKAGECONFIG:append:pn-weston = " remoting"
 PACKAGECONFIG:append:pn-flutter-engine = " profile debug"
 
 IMAGE_INSTALL += " \
+    gtk4 \
     python3-core \
     python3-datetime \
     python3-json \
@@ -62,6 +63,7 @@ IMAGE_INSTALL += " \
     python3-netifaces \
     python3-posix-ipc \
     python3-websockets \
+    pigz \
     libnice \
     libvpx \
     libopus \
@@ -105,5 +107,5 @@ IMAGE_INSTALL += " \
     baresip \
     device-service \
     pcuv-app \
-    webrtc-test \
+    gst-webrtc-app \
 "
